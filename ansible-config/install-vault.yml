@@ -1,0 +1,19 @@
+---
+- name: Install HC Vault
+  hosts: vault
+  connection: docker
+  tasks:
+    - name: Unzip vault archive
+      unarchive:
+        src: https://releases.hashicorp.com/vault/1.6.0/vault_1.6.0_linux_amd64.zip
+        dest: /usr/local/bin
+        remote_src: yes
+    
+    - name: Test Vault
+      command: vault --version
+      register: vault_version
+
+    - name: Display Vault version
+      debug:
+        msg: "{{ vault_version }}"
+

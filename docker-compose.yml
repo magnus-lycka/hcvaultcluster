@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+    vault:
+        build: vault/src
+        #image: vault
+        container_name: vault
+        volumes:
+            - vaultbackup:/var/backups/vault
+            - vaultlogs:/var/logs/vault
+            - ./vault/data:/opt/vault/data
+        ports:
+            - 8200:8200
+            - 8201:8201
+        restart: always
+        cap_add:
+            - IPC_LOCK
+        entrypoint: vault server -config=/etc/vault.d/vault.hcl
+
+    # proxy:
+    #     build: proxy
+    #     ports:
+    #         - 8080:80
+    #     restart: always
+
+volumes:
+    vaultbackup:
+        external: true
+    vaultlogs:
+        external: true
